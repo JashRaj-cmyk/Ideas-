@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random 0→1 Idea</title>
+  <meta name="description" content="A super-minimal page that shows a random 0→1 business idea on every refresh." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0b0b0b;
+      --muted: #6b7280; /* gray-500 */
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .wrap {
+      text-align: center;
+      max-width: 900px;
+      padding: 24px;
+    }
+    .idea {
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      line-height: 1.15;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .hint {
+      margin-top: 16px;
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      color: var(--muted);
+      opacity: 0.9;
+    }
+    noscript {
+      margin-top: 10px;
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div id="idea" class="idea" aria-live="polite"></div>
+    <div class="hint">refresh to get another idea</div>
+    <noscript>This page needs JavaScript enabled to show a random idea.</noscript>
+  </main>
+
+  <script>
+    // 🔹 Seed ideas — add/remove freely. Keep them short & punchy.
+    const IDEAS = [
+      "A browser plugin that rewrites any page to your reading level in real time.",
+      "Shoes that charge your phone as you walk (energy-harvesting insoles).",
+      "A calendar that schedules your day by your biorhythm, not hours.",
+      "An email client that auto-records short video replies for you in your voice.",
+      "A fridge that suggests meals from what's inside and generates a 10‑min recipe.",
+      "City noise map with live ‘quiet route’ navigation for walkers.",
+      "A job board that matches by learning style, not resume keywords.",
+      "Ultra-local weather from balcony sensors shared with your building.",
+      "Glasses that translate text in the real world on-lens instantly.",
+      "A contract that explains itself in plain language alongside the legalese.",
+      "A social app where posts self-destruct after being meaningfully replied to.",
+      "Clothes that change color with temperature (no screens, just material science).",
+      "An AI that negotiates your bills (rent, internet) every month autonomously.",
+      "Crowd-owned neighborhood Wi‑Fi that pays residents a micro-dividend.",
+      "A bank that rounds up carbon and buys you local offsets you can visit.",
+      "A ‘try before you buy’ virtual wardrobe using your exact body twin.",
+      "A shared ‘instrument library’ subscription for creators (cameras, mics, drones).",
+      "An app that converts any lecture into a practice exam tailored to you.",
+      "A ‘privacy nutrition label’ for every app you install—standardized, verified.",
+      "Headphones that play white noise matching the room’s frequency to erase it.",
+      "A marketplace for renting unused rooftop space for gardens & solar.",
+      "A browser that pays you to read long-form by sharing publisher revenue.",
+      "Smart pillbox that texts context (why to take) not just reminders.",
+      "Maps that show real-time queue lengths for cafes, gyms, and offices.",
+      "A writing app that blocks clichés and forces original phrasing.",
+      "Portable desk that unfolds from a backpack in 10 seconds.",
+      "‘Explain like I’m your mom’ mode for any government form.",
+      "A marketplace for micro‑classrooms in apartments (verified mentors).",
+      "A browser ‘calm mode’ that removes numbers, prices, and likes.",
+      "Neighborhood swap network: trade skills in 15‑min blocks.",
+      "An AI that turns your calendar into a script for your day.",
+      "Home power ledger that shows where every rupee of electricity went.",
+      "A music app that composes a theme song for your day from your biometrics.",
+      "Shoelaces that never untie (mechanical lock with quick release).",
+      "A ‘first 5 users’ accelerator—cohorts that only help you get users 1‑5.",
+      "Search that returns opposing viewpoints by default.",
+      "A browser tab that only opens once you close two others (attention banker).",
+      "Neighborhood micro‑fridge network for cold deliveries in 10 minutes.",
+      "A kid’s book that grows up—reprints the same story at higher levels yearly.",
+      "A resume that updates itself from your Git, Figma, and commits.",
+      "AR notes you can stick to real places and share with friends.",
+      "A subscription that converts your home’s junk drawer into Etsy listings.",
+      "A gym membership that pays you back in cash if you actually go.",
+      "A ‘quiet phone’—no apps, only AI summaries sent to email nightly.",
+      "Software that lets local stores share inventory to beat big e‑commerce.",
+      "A ‘memory vault’ that texts your past self’s thought on this day last year.",
+      "An app that auto‑splits bills by who actually ate what via photo recognition.",
+      "Subtitles for real life—phone camera shows captions for live conversations.",
+      "A sleep mask that gently wakes you with light patterns synced to dreams.",
+      "On‑device AI that drafts WhatsApp replies in your exact tone.",
+      "A home printer that only prints checklists and sticky notes perfectly.",
+      "A ‘why didn’t I know this?’ feed for local civic updates that matter.",
+      "Community‑owned delivery riders that take equity instead of gig wages.",
+      "A donation wallet that proves impact with verifiable on‑chain receipts.",
+      "A school timetable app that auto‑fills revision based on upcoming tests.",
+      "Micro‑scholarships for YouTube learners—complete playlists, get paid.",
+      "An app that pairs elders with kids for storytime calls across languages.",
+      "A browser command bar for life: \"/book dentist\" actually books it.",
+      "A neighborhood library of power tools with 24/7 lockers.",
+      "An inbox that converts long emails into 3 actionable bullets automatically."
+    ];
+
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function showIdea() {
+      const el = document.getElementById('idea');
+      const idea = pickRandom(IDEAS);
+      el.textContent = idea;
+      document.title = idea.length > 60 ? idea.slice(0, 60) + '…' : idea;
+    }
+
+    showIdea();
+  </script>
+</body>
+</html>
