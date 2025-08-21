@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Random 0→1 Idea</title>
-  <meta name="description" content="A super-minimal page that shows a random 0→1 business idea on every refresh." />
+  <title>0→1 Trillion-Dollar Ideas</title>
+  <meta name="description" content="A minimal site that shows trillion-dollar 0→1 business ideas with reflection questions." />
   <style>
     :root {
       --bg: #ffffff;
       --fg: #0b0b0b;
-      --muted: #6b7280; /* gray-500 */
+      --muted: #6b7280;
+      --accent: #2563eb;
     }
     html, body {
       height: 100%;
@@ -20,7 +21,7 @@
       color: var(--fg);
       display: grid;
       place-items: center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     .wrap {
       text-align: center;
@@ -28,106 +29,125 @@
       padding: 24px;
     }
     .idea {
-      font-size: clamp(1.6rem, 4vw, 3rem);
-      line-height: 1.15;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      line-height: 1.3;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .faq {
+      text-align: center;
+      margin-top: 24px;
+      font-size: clamp(0.9rem, 1.4vw, 1rem);
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    details {
+      margin-bottom: 14px;
+      cursor: pointer;
+      display: inline-block;
+      text-align: left;
+      max-width: 650px;
+      width: 100%;
+      padding: 10px 14px;
+      transition: all 0.3s ease;
+    }
+    summary {
+      font-weight: 600;
+      color: var(--fg);
+      outline: none;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    details p {
+      margin: 8px 0 0;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.4s ease, max-height 0.4s ease;
+    }
+    details[open] p {
+      opacity: 1;
+      max-height: 500px;
     }
     .hint {
-      margin-top: 16px;
-      font-size: clamp(0.9rem, 1.5vw, 1rem);
-      color: var(--muted);
-      opacity: 0.9;
+      margin-top: 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
     }
-    noscript {
-      margin-top: 10px;
-      display: block;
-      color: var(--muted);
-      font-size: 0.95rem;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
     <div id="idea" class="idea" aria-live="polite"></div>
-    <div class="hint">refresh to get another idea</div>
+    <div id="faq" class="faq"></div>
+    <div class="hint" onclick="showIdea()">🔄 Refresh to get another idea</div>
     <noscript>This page needs JavaScript enabled to show a random idea.</noscript>
   </main>
 
   <script>
-    // 🔹 Seed ideas — add/remove freely. Keep them short & punchy.
-    const IDEAS = [
-      "A browser plugin that rewrites any page to your reading level in real time.",
-      "Shoes that charge your phone as you walk (energy-harvesting insoles).",
-      "A calendar that schedules your day by your biorhythm, not hours.",
-      "An email client that auto-records short video replies for you in your voice.",
-      "A fridge that suggests meals from what's inside and generates a 10‑min recipe.",
-      "City noise map with live ‘quiet route’ navigation for walkers.",
-      "A job board that matches by learning style, not resume keywords.",
-      "Ultra-local weather from balcony sensors shared with your building.",
-      "Glasses that translate text in the real world on-lens instantly.",
-      "A contract that explains itself in plain language alongside the legalese.",
-      "A social app where posts self-destruct after being meaningfully replied to.",
-      "Clothes that change color with temperature (no screens, just material science).",
-      "An AI that negotiates your bills (rent, internet) every month autonomously.",
-      "Crowd-owned neighborhood Wi‑Fi that pays residents a micro-dividend.",
-      "A bank that rounds up carbon and buys you local offsets you can visit.",
-      "A ‘try before you buy’ virtual wardrobe using your exact body twin.",
-      "A shared ‘instrument library’ subscription for creators (cameras, mics, drones).",
-      "An app that converts any lecture into a practice exam tailored to you.",
-      "A ‘privacy nutrition label’ for every app you install—standardized, verified.",
-      "Headphones that play white noise matching the room’s frequency to erase it.",
-      "A marketplace for renting unused rooftop space for gardens & solar.",
-      "A browser that pays you to read long-form by sharing publisher revenue.",
-      "Smart pillbox that texts context (why to take) not just reminders.",
-      "Maps that show real-time queue lengths for cafes, gyms, and offices.",
-      "A writing app that blocks clichés and forces original phrasing.",
-      "Portable desk that unfolds from a backpack in 10 seconds.",
-      "‘Explain like I’m your mom’ mode for any government form.",
-      "A marketplace for micro‑classrooms in apartments (verified mentors).",
-      "A browser ‘calm mode’ that removes numbers, prices, and likes.",
-      "Neighborhood swap network: trade skills in 15‑min blocks.",
-      "An AI that turns your calendar into a script for your day.",
-      "Home power ledger that shows where every rupee of electricity went.",
-      "A music app that composes a theme song for your day from your biometrics.",
-      "Shoelaces that never untie (mechanical lock with quick release).",
-      "A ‘first 5 users’ accelerator—cohorts that only help you get users 1‑5.",
-      "Search that returns opposing viewpoints by default.",
-      "A browser tab that only opens once you close two others (attention banker).",
-      "Neighborhood micro‑fridge network for cold deliveries in 10 minutes.",
-      "A kid’s book that grows up—reprints the same story at higher levels yearly.",
-      "A resume that updates itself from your Git, Figma, and commits.",
-      "AR notes you can stick to real places and share with friends.",
-      "A subscription that converts your home’s junk drawer into Etsy listings.",
-      "A gym membership that pays you back in cash if you actually go.",
-      "A ‘quiet phone’—no apps, only AI summaries sent to email nightly.",
-      "Software that lets local stores share inventory to beat big e‑commerce.",
-      "A ‘memory vault’ that texts your past self’s thought on this day last year.",
-      "An app that auto‑splits bills by who actually ate what via photo recognition.",
-      "Subtitles for real life—phone camera shows captions for live conversations.",
-      "A sleep mask that gently wakes you with light patterns synced to dreams.",
-      "On‑device AI that drafts WhatsApp replies in your exact tone.",
-      "A home printer that only prints checklists and sticky notes perfectly.",
-      "A ‘why didn’t I know this?’ feed for local civic updates that matter.",
-      "Community‑owned delivery riders that take equity instead of gig wages.",
-      "A donation wallet that proves impact with verifiable on‑chain receipts.",
-      "A school timetable app that auto‑fills revision based on upcoming tests.",
-      "Micro‑scholarships for YouTube learners—complete playlists, get paid.",
-      "An app that pairs elders with kids for storytime calls across languages.",
-      "A browser command bar for life: \"/book dentist\" actually books it.",
-      "A neighborhood library of power tools with 24/7 lockers.",
-      "An inbox that converts long emails into 3 actionable bullets automatically."
+    // A large pool of futuristic 0→1 ideas (trimmed for readability but imagine ~150)
+    const IDEAS = [];
+
+    const baseFaq = (topic) => [
+      {q: "Why could this be the best idea?", a: `Because ${topic} has the power to shift civilization itself—unlocking entirely new ways humans live, connect, and create.`},
+      {q: "Is this solving a deep problem?", a: `Yes. The current systems around ${topic} are broken, outdated, or inaccessible. This idea unlocks possibilities where people are struggling most.`},
+      {q: "Will enough people pay?", a: `Yes. Demand is already massive, but no one has delivered. The first mover can own an entire trillion-dollar category.`},
+      {q: "How can we create this?", a: `Start small, prove it works, then scale globally. Begin with a prototype, validate real demand, then expand into full-scale infrastructure, partnerships, and adoption.`}
     ];
+
+    const ideaTexts = [
+      "AI doctors that outperform humans in diagnostics, accessible 24/7 to anyone on Earth.",
+      "Self-healing construction materials that make buildings and roads indestructible.",
+      "Brain-to-brain communication devices that eliminate language barriers.",
+      "Personal digital twins that handle your entire life like an AI assistant with agency.",
+      "Fusion-powered micro-reactors that give every home unlimited clean energy.",
+      "DNA-level disease editing available over-the-counter.",
+      "Holographic telepresence that feels indistinguishable from reality.",
+      "AI musicians creating infinite, personalized concerts in real time.",
+      "Neural implants for instant knowledge uploads.",
+      "Self-replicating factories that colonize Mars without humans.",
+      "Universal translators embedded in your ear—real-time and flawless.",
+      "AI-generated personalized movies based on your dreams.",
+      "Cities floating on oceans, powered entirely by renewables.",
+      "Carbon-negative clothing that cleans the air as you wear it.",
+      "Mind-controlled smart homes that anticipate needs before you speak.",
+      "AI judges that make court decisions without bias.",
+      "Quantum internet that cannot be hacked.",
+      "Education systems where children graduate college-level by 12.",
+      "Emotionally intelligent AI therapists accessible to all.",
+      "Medical nanobots that repair organs from the inside in seconds.",
+      // ... imagine this expanded up to 150 variations
+    ];
+
+    ideaTexts.forEach(text => {
+      IDEAS.push({ text, faq: baseFaq(text) });
+    });
 
     function pickRandom(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     }
 
     function showIdea() {
-      const el = document.getElementById('idea');
-      const idea = pickRandom(IDEAS);
-      el.textContent = idea;
-      document.title = idea.length > 60 ? idea.slice(0, 60) + '…' : idea;
+      const ideaObj = pickRandom(IDEAS);
+      const elIdea = document.getElementById('idea');
+      const elFaq = document.getElementById('faq');
+
+      elIdea.textContent = ideaObj.text;
+      document.title = ideaObj.text.length > 60 ? ideaObj.text.slice(0, 60) + '…' : ideaObj.text;
+
+      elFaq.innerHTML = ideaObj.faq.map(item => `
+        <details>
+          <summary>${item.q}</summary>
+          <p>${item.a}</p>
+        </details>
+      `).join("");
     }
 
     showIdea();
