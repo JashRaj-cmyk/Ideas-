@@ -75,6 +75,7 @@
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent);
+      animation: pulse 2s infinite;
       cursor: pointer;
     }
     @keyframes pulse {
@@ -87,45 +88,264 @@
   <main class="wrap">
     <div id="idea" class="idea" aria-live="polite"></div>
     <div id="faq" class="faq"></div>
-    <div class="hint" onclick="showIdea()">Refresh to get another idea</div>
+    <div class="hint" onclick="showIdea()">🔄 Refresh to get another idea</div>
     <noscript>This page needs JavaScript enabled to show a random idea.</noscript>
   </main>
 
   <script>
-    // A large pool of futuristic 0→1 ideas (trimmed for readability but imagine ~150)
+    // 200 World-Changing Startup Ideas (your list), each gets a tailored FAQ
     const IDEAS = [];
 
     const baseFaq = (topic) => [
-      {q: "Why could this be the best idea?", a: `Because ${topic} has the power to shift civilization itself—unlocking entirely new ways humans live, connect, and create.`},
-      {q: "Is this solving a deep problem?", a: `Yes. The current systems around ${topic} are broken, outdated, or inaccessible. This idea unlocks possibilities where people are struggling most.`},
-      {q: "Will enough people pay?", a: `Yes. Demand is already massive, but no one has delivered. The first mover can own an entire trillion-dollar category.`},
-      {q: "How can we create this?", a: `Start small, prove it works, then scale globally. Begin with a prototype, validate real demand, then expand into full-scale infrastructure, partnerships, and adoption.`}
+      { q: "Why could this be the best idea?", a: `Because ${topic} can open a brand-new category that reshapes how billions live, work, and create.` },
+      { q: "Is this solving a deep problem?", a: `Yes. Current systems around ${topic} are limited, inequitable, or inefficient—this unlocks a step-change in capability.` },
+      { q: "Will enough people pay?", a: `Yes. The demand already exists or is latent. The first team to deliver ${topic} credibly can command a trillion-dollar market.` },
+      { q: "How can we create this?", a: `Start with a narrowly-scoped prototype of ${topic}, validate with early adopters, build the data flywheel, then scale via partnerships, infrastructure, and regulation pathways.` }
     ];
 
     const ideaTexts = [
-      "AI doctors that outperform humans in diagnostics, accessible 24/7 to anyone on Earth.",
-      "Self-healing construction materials that make buildings and roads indestructible.",
-      "Brain-to-brain communication devices that eliminate language barriers.",
-      "Personal digital twins that handle your entire life like an AI assistant with agency.",
-      "Fusion-powered micro-reactors that give every home unlimited clean energy.",
-      "DNA-level disease editing available over-the-counter.",
-      "Holographic telepresence that feels indistinguishable from reality.",
-      "AI musicians creating infinite, personalized concerts in real time.",
-      "Neural implants for instant knowledge uploads.",
-      "Self-replicating factories that colonize Mars without humans.",
-      "Universal translators embedded in your ear—real-time and flawless.",
-      "AI-generated personalized movies based on your dreams.",
-      "Cities floating on oceans, powered entirely by renewables.",
-      "Carbon-negative clothing that cleans the air as you wear it.",
-      "Mind-controlled smart homes that anticipate needs before you speak.",
-      "AI judges that make court decisions without bias.",
-      "Quantum internet that cannot be hacked.",
-      "Education systems where children graduate college-level by 12.",
-      "Emotionally intelligent AI therapists accessible to all.",
-      "Medical nanobots that repair organs from the inside in seconds.",
-      // ... imagine this expanded up to 150 variations
+      // AI & Machine Learning (10)
+      "AI that predicts and prevents mental health crises before they happen using social media patterns",
+      "Neural networks that translate animal communication into human language in real-time",
+      "AI-powered personalized cancer treatments generated from individual tumor DNA analysis",
+      "Machine learning platform that optimizes global supply chains to eliminate food waste",
+      "AI therapist that provides 24/7 mental health support through voice and behavioral analysis",
+      "Computer vision system that detects deepfakes and misinformation in real-time across all media",
+      "AI that designs custom medications for each person's unique genetic makeup",
+      "Machine learning system that predicts natural disasters 6 months in advance",
+      "AI-powered brain implant that helps paralyzed patients control computers with thoughts",
+      "Neural network that automatically solves math proofs and advances pure mathematics",
+
+      // Biotech & Health (10)
+      "CRISPR-based treatment that reverses aging at the cellular level",
+      "Lab-grown organs using patient's own stem cells for perfect transplant matches",
+      "Bioengineered bacteria that eat plastic waste and convert it to biodegradable materials",
+      "Synthetic blood that can carry 10x more oxygen than natural blood",
+      "Gene therapy that eliminates hereditary diseases before birth",
+      "Bioprinted skin grafts that grow directly on burn victims",
+      "Engineered probiotics that prevent and cure depression through gut-brain axis",
+      "Nano-robots in bloodstream that repair cellular damage and prevent cancer",
+      "Synthetic spider silk production for ultra-strong, biodegradable materials",
+      "Bioengineered algae that produces any pharmaceutical compound on demand",
+
+      // Space & Energy (10)
+      "Solar panels that work efficiently in space and beam energy back to Earth",
+      "Nuclear fusion reactors small enough to power individual cities",
+      "Asteroid mining operation that brings rare earth metals back to Earth",
+      "Space elevators using carbon nanotube cables for cheap orbital access",
+      "Orbital manufacturing facilities that produce perfect crystals and alloys in zero gravity",
+      "Fusion-powered spacecraft that can reach Mars in 30 days",
+      "Solar paint that turns any surface into an energy generator",
+      "Geothermal energy extraction from anywhere on Earth using deep drilling",
+      "Space-based internet constellation providing global high-speed access",
+      "Lunar helium-3 mining for clean fusion energy on Earth",
+
+      // Climate & Environment (10)
+      "Atmospheric processors that directly remove CO2 and convert it to useful materials",
+      "Genetically modified trees that grow 10x faster and absorb more carbon",
+      "Ocean thermal energy converters that also desalinate seawater",
+      "Artificial photosynthesis systems that produce fuel from sunlight and CO2",
+      "Weather modification technology that can end droughts and prevent hurricanes",
+      "Plastic-eating enzymes deployed globally to clean up ocean garbage patches",
+      "Vertical farms in skyscrapers that feed entire cities with minimal land use",
+      "Desert terraforming using engineered soil microbes and atmospheric water harvesting",
+      "Carbon capture concrete that gets stronger as it absorbs CO2 from air",
+      "Bioengineered coral that can survive ocean acidification and rising temperatures",
+
+      // Transportation (10)
+      "Hyperloop network connecting all major cities at 600+ mph speeds",
+      "Flying cars with AI autopilot that eliminate traffic congestion",
+      "Teleportation network using quantum entanglement for instant travel",
+      "Self-driving cargo ships that reduce shipping costs by 90%",
+      "Personal jetpacks with 2-hour flight time for urban commuting",
+      "Underground pneumatic tube networks for instant package delivery",
+      "Maglev trains that levitate using room-temperature superconductors",
+      "Autonomous submarine taxis for coastal city transportation",
+      "Rocket-powered point-to-point Earth travel in 30 minutes anywhere",
+      "Gravity-defying vehicles using controlled electromagnetic fields",
+
+      // Food & Agriculture (10)
+      "Cellular agriculture that grows real meat without animals",
+      "Vertical ocean farms that grow kelp and fish in floating structures",
+      "AI-controlled greenhouse robots that optimize plant growth conditions",
+      "Synthetic biology platform that creates any flavor or nutrient on demand",
+      "Edible packaging made from fruit and vegetable waste",
+      "Drought-resistant crops engineered to thrive in desert conditions",
+      "3D food printers that create nutritionally perfect meals from basic ingredients",
+      "Aquaponics systems that produce fish and vegetables with 95% less water",
+      "Insect protein farms that convert food waste into high-quality protein",
+      "Photosynthetic humans who can derive energy directly from sunlight",
+
+      // Education & Knowledge (10)
+      "AI tutors that adapt to each student's learning style and pace perfectly",
+      "Virtual reality classrooms where students can experience historical events firsthand",
+      "Brain-computer interfaces that allow direct knowledge downloads",
+      "Global translation platform that eliminates language barriers in real-time",
+      "Personalized education paths generated by AI based on career goals",
+      "Augmented reality that overlays educational information on real-world objects",
+      "Skill-sharing marketplace where anyone can teach or learn anything instantly",
+      "AI that writes personalized textbooks for each student's comprehension level",
+      "Virtual laboratories where students can conduct dangerous experiments safely",
+      "Memory enhancement technology that helps people retain information perfectly",
+
+      // Communication & Social (10)
+      "Universal empathy device that lets people truly feel others' emotions",
+      "AI mediator that resolves conflicts between individuals and nations",
+      "Social network that promotes genuine human connection over addiction",
+      "Virtual reality meetings that feel more real than in-person interactions",
+      "Translation implants that allow seamless communication in any language",
+      "Emotion-reading AI that helps autistic individuals navigate social situations",
+      "Decentralized social media platform that users collectively own and control",
+      "Holographic communication that projects life-size 3D images anywhere",
+      "AI companion that provides perfect emotional support and never judges",
+      "Global democracy platform where every person can vote on world issues",
+
+      // Manufacturing & Materials (10)
+      "Programmable matter that can reshape into any object on command",
+      "Self-assembling buildings that construct themselves from basic materials",
+      "Molecular assemblers that build any product atom by atom",
+      "Smart materials that self-repair when damaged",
+      "4D printing that creates objects that transform over time",
+      "Room-temperature superconductors for lossless power transmission",
+      "Invisibility cloaks using metamaterials that bend light around objects",
+      "Self-replicating robots that can build copies of themselves",
+      "Graphene mass production that makes ultra-strong materials affordable",
+      "Living buildings that grow, heal, and adapt like biological organisms",
+
+      // Finance & Economics (10)
+      "Universal basic income funded by AI automation profits",
+      "Blockchain-based global currency that eliminates exchange rates",
+      "AI financial advisor that guarantees optimal investment returns for everyone",
+      "Automated tax system that calculates and pays taxes transparently",
+      "Decentralized lending platform that provides microloans to anyone globally",
+      "Carbon credit marketplace that incentivizes environmental protection",
+      "AI-powered economic modeling that prevents recessions and market crashes",
+      "Global resource allocation system that eliminates poverty and waste",
+      "Reputation-based economy where good deeds are converted to currency",
+      "Automated negotiation AI that gets the best deals on everything",
+
+      // Security & Privacy (10)
+      "Quantum encryption that makes all communication completely unhackable",
+      "AI bodyguard that predicts and prevents crimes before they happen",
+      "Biometric replacement system that makes passwords and IDs obsolete",
+      "Personal privacy shield that blocks all unauthorized data collection",
+      "Decentralized internet that no government or corporation can control",
+      "AI judge that makes perfectly fair and unbiased legal decisions",
+      "Predictive policing that prevents crime without violating civil rights",
+      "Personal security drones that protect individuals from physical threats",
+      "Digital identity verification that eliminates fraud and identity theft",
+      "Automated cyber-defense systems that protect against all hacking attempts",
+
+      // Entertainment & Media (10)
+      "AI that creates personalized movies and TV shows for each viewer",
+      "Virtual reality experiences indistinguishable from real life",
+      "AI musicians that compose perfect songs based on your mood",
+      "Holographic sports where players compete in impossible environments",
+      "Interactive storytelling where you become the main character",
+      "AI game masters that create infinite, personalized gaming experiences",
+      "Neural interface gaming where you control characters with thoughts",
+      "Time-travel simulation experiences based on historical data",
+      "AI actors that can play any role perfectly in any language",
+      "Shared dream experiences where multiple people enter the same dream",
+
+      // Retail & Commerce (10)
+      "AI personal shopper that predicts what you need before you know it",
+      "Instant 3D printing stores that create any product while you wait",
+      "Virtual try-on technology for clothes, furniture, and cosmetics",
+      "Automated personal stylist that curates perfect outfits for any occasion",
+      "AI interior designer that optimizes living spaces for happiness and productivity",
+      "Subscription service for access to any physical product without ownership",
+      "Personalized nutrition supplements created from genetic analysis",
+      "AI chef that creates custom recipes based on your health needs and preferences",
+      "Virtual showrooms where you can experience products before buying",
+      "Automated personal assistant that handles all purchasing decisions",
+
+      // Workspace & Productivity (10)
+      "AI assistant that completes complex work tasks while you sleep",
+      "Virtual coworking spaces that make remote work feel like being in the same room",
+      "Productivity implants that help you focus and eliminate distractions",
+      "AI project manager that optimizes team workflows in real-time",
+      "Automated meeting summarizer that captures key decisions and action items",
+      "Brain-computer interface for typing at the speed of thought",
+      "AI coach that helps you develop any skill to expert level",
+      "Virtual reality offices that adapt to your work style and preferences",
+      "Predictive calendar that schedules your time for maximum productivity and happiness",
+      "AI negotiator that handles all your business deals and gets the best outcomes",
+
+      // Healthcare Delivery (10)
+      "AI doctor that provides expert medical diagnosis through your smartphone",
+      "Portable MRI machines that fit in ambulances for instant diagnosis",
+      "Telemedicine platform that provides specialist care to rural areas globally",
+      "AI pharmacist that creates custom medications in real-time",
+      "Health monitoring contact lenses that track all vital signs continuously",
+      "Robotic surgeons that perform operations with superhuman precision",
+      "AI epidemic predictor that prevents disease outbreaks before they spread",
+      "Personalized medicine platform that optimizes treatments for your genetics",
+      "Mental health AI that provides therapy and medication management 24/7",
+      "Regenerative medicine that regrows any damaged organ or limb",
+
+      // Urban Planning & Cities (10)
+      "AI city planner that designs urban environments for maximum happiness",
+      "Underground automated waste disposal systems that eliminate garbage trucks",
+      "Smart traffic lights that eliminate congestion and reduce commute times",
+      "Vertical farms integrated into every building for local food production",
+      "AI-controlled building systems that optimize energy use in real-time",
+      "Underground delivery networks that keep trucks off city streets",
+      "Smart sidewalks that generate electricity from foot traffic",
+      "Automated snow removal systems that keep cities moving in winter",
+      "AI-designed neighborhoods that promote social interaction and community",
+      "Floating cities that adapt to rising sea levels",
+
+      // Water & Resources (10)
+      "Atmospheric water generators that create drinking water from thin air",
+      "Ocean cleanup robots that collect plastic and convert it to useful materials",
+      "Smart irrigation systems that grow crops with 95% less water",
+      "Sewage treatment plants that convert waste into drinking water and energy",
+      "Desalination powered entirely by renewable energy sources",
+      "Water recycling systems that purify any water source to drinking quality",
+      "Rain harvesting networks that capture and distribute water efficiently",
+      "Smart water meters that detect leaks and prevent waste automatically",
+      "Groundwater recharge systems that prevent aquifer depletion",
+      "Fog nets that harvest water from air in arid regions",
+
+      // Mental Health & Wellness (10)
+      "AI therapist that provides better treatment than human psychologists",
+      "Meditation apps that induce specific brain states for optimal mental health",
+      "Social anxiety treatment through gradual virtual reality exposure therapy",
+      "AI life coach that helps you achieve any personal goal",
+      "Digital detox retreats that reset your relationship with technology",
+      "Biometric mood tracking that predicts depression episodes days in advance",
+      "AI counselor for couples therapy and relationship improvement",
+      "Virtual reality exposure therapy for treating any phobia or trauma",
+      "Personalized mindfulness programs based on your brain activity patterns",
+      "AI-powered addiction recovery programs with 95% success rates",
+
+      // Governance & Society (10)
+      "AI policy maker that creates legislation based on evidence and public good",
+      "Blockchain voting system that makes elections transparent and unhackable",
+      "AI mediator that resolves international conflicts through optimal negotiations",
+      "Decentralized governance platform where citizens directly vote on all issues",
+      "AI prison system that focuses on rehabilitation and prevents recidivism",
+      "Transparent government platform that tracks every public dollar spent",
+      "AI ethics board that ensures all technology development serves humanity",
+      "Global resource sharing network that eliminates inequality between nations",
+      "AI diplomat that negotiates international treaties for mutual benefit",
+      "Citizen jury platform that crowdsources fair legal decisions",
+
+      // Longevity & Anti-Aging (10)
+      "Telomere restoration therapy that extends healthy lifespan to 200+ years",
+      "AI personal trainer that designs perfect exercise routines for longevity",
+      "Senescent cell removal therapy that reverses age-related decline",
+      "Personalized nutrition that optimizes your diet for maximum lifespan",
+      "Sleep optimization technology that makes every night's rest perfectly restorative",
+      "Hormone replacement therapy that maintains youthful vitality indefinitely",
+      "DNA repair technology that prevents age-related genetic damage",
+      "Stem cell therapy that regenerates any aging organ or tissue",
+      "AI longevity coach that guides lifestyle choices for maximum healthspan",
+      "Cryogenic preservation that allows people to wake up in the future when aging is cured"
     ];
 
+    // Build IDEAS with tailored FAQs
     ideaTexts.forEach(text => {
       IDEAS.push({ text, faq: baseFaq(text) });
     });
@@ -154,3 +374,4 @@
   </script>
 </body>
 </html>
+
